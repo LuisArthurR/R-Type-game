@@ -14,21 +14,12 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandle keyH;
 
-    private int x, y;         //Posição inicial do player
-    private int playerSpeed;
-
-    public Player(GamePanel gp, KeyHandle keyH) {
+    public Player(GamePanel gp, KeyHandle keyH, int x, int y, int speed) {
+        super(x, y, speed);
+        direction = "idle";
         this.gp = gp;
         this.keyH = keyH;
-        setDefaultValues();
         getPlayerImage();
-    }
-
-    public void setDefaultValues() {
-        this.x = 100; 
-        this.y = 100;
-        this.playerSpeed = 4;
-        direction = "idle";
     }
 
     public void getPlayerImage() {
@@ -51,32 +42,32 @@ public class Player extends Entity{
 
         if(keyH.upPressed == true){
             direction = "up";
-            y -= playerSpeed;
+            y -= speed;
         }
 
         if(keyH.downPressed == true){
             direction = "down";
-            y += playerSpeed;
+            y += speed;
         }
 
         if(keyH.leftPressed == true){
             
             if(keyH.downPressed == true) {
                 direction = "down";
-                y += playerSpeed/2;
-                x -= playerSpeed/2;
+                y += speed/2;
+                x -= speed/2;
             }
             else if(keyH.upPressed == true) {
                 direction = "up";
-                y -= playerSpeed/2;
-                x -= playerSpeed/2;
+                y -= speed/2;
+                x -= speed/2;
             }
             else if(keyH.rightPressed == true) {
                 direction = "idle";
             }
             else{
                 direction = "idle";
-                x -= playerSpeed;
+                x -= speed;
             }
         }
 
@@ -84,17 +75,17 @@ public class Player extends Entity{
 
             if(keyH.downPressed == true) {
                 direction = "down";
-                y += playerSpeed/2;
-                x += playerSpeed/2;
+                y += speed/2;
+                x += speed/2;
             }
             else if(keyH.upPressed == true) {
                 direction = "up";
-                y -= playerSpeed/2;
-                x += playerSpeed/2;
+                y -= speed/2;
+                x += speed/2;
             }
             else{
                 direction = "right";
-                x += playerSpeed;
+                x += speed;
             }
         }
         
@@ -135,6 +126,6 @@ public class Player extends Entity{
     }
 
     public int getPlayerSpeed() {
-        return playerSpeed;
+        return speed;
     }
 }

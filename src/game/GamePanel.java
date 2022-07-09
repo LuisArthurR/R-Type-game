@@ -4,11 +4,15 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import entity.Player;
+import scenario.Background;
+import entity.Enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import java.util.ArrayList; /////////
+import java.util.List;      /////////
 
 public class GamePanel extends JPanel implements Runnable{
     
@@ -22,6 +26,14 @@ public class GamePanel extends JPanel implements Runnable{
     final int screenWidth = tileSize * maxScreenCol;  // 1512px
     final int screenHeight = tileSize * maxScreenRow; // 882px
 
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
     KeyHandle keyH = new KeyHandle();
     Thread gameThread; // Quando essa thread iniciar, vai continuar o programa rodando até você fechar.
 
@@ -29,9 +41,28 @@ public class GamePanel extends JPanel implements Runnable{
     int FPS = 60;
 
     //Posição inicial do player e velocidade
-    private Player player = new Player(this, keyH);
+    private Player player = new Player(this, keyH, 100, 100, 5);
     int playerX = player.getX();
     int playerY = player.getY();
+
+    //Criação da fase e seu cenário
+    private Background background = new Background(this);
+
+    //Invocando os inimigos
+    private List<Enemy> enemy = new ArrayList<Enemy>();
+    int quantidade = 4;
+
+    public void spawnEnemies() {
+
+        quantidade = 4;
+
+        for(int i = 0; i < quantidade; i++) {
+            int posX = (int)(Math.random() * 2000 + 1512);
+            int posY = (int)(Math.random() * 370 + 40);
+
+            enemy.add(new Enemy(this, posX, posY, 5));
+        }
+    }
 
     public GamePanel() {
 
@@ -69,6 +100,7 @@ public class GamePanel extends JPanel implements Runnable{
             lastTime = currentTime;
 
             if(delta >= 1) {
+
                 //Update: atualizar as infomrações da tela, assim como a posição do jogador
                 update();
 
@@ -83,6 +115,27 @@ public class GamePanel extends JPanel implements Runnable{
     public void update() {
         
         player.update();
+
+        //System.out.println(enemy.size());
+
+        if(enemy.size() < 1) {
+            spawnEnemies();
+        } 
+
+        if(enemy.size() > 0) {
+            for(int i = 0; i < quantidade; i++) {
+                enemy.get(i).update();
+            }
+        }
+
+        if(enemy.size() > 0) {
+            for(int i = 0; i < quantidade; i++) {
+                if(enemy.get(i).getX() < -100) {
+                    enemy.remove(i);
+                    quantidade--;
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -90,8 +143,19 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g; //mais controle sobre a geometria, coordenada e cor.
 
-        //Criando o persoangem
+        //Desenhando o cenário
+        background.draw(g2);
+
+        //Criando o inimigo
+        if(enemy.size() > 0) {
+            for(int i = 0; i < quantidade; i++) {
+                enemy.get(i).draw(g2);
+            }
+        }
+
+        //Criando o personagem
         player.draw(g2);
+
         g2.dispose();
     }
 }
