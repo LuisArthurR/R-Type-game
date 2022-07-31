@@ -4,23 +4,36 @@ import java.awt.event.KeyListener;
 
 public class KeyHandle implements KeyListener{
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    private boolean upPressed, downPressed, leftPressed, rightPressed, jPressed, enterPressed, escPressed;
 
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode(); // Pega o endereço da tecla pressionada
 
         if(code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
-            upPressed = true;
+            this.upPressed = true;
+            this.downPressed = false;
         }
         if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
-            downPressed = true;
+            this.downPressed = true;
+            this.upPressed = false;
         }
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
-            leftPressed = true;
+            this.leftPressed = true;
+            this.rightPressed = false;
         }
         if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) {
-            rightPressed = true;
+            this.rightPressed = true;
+            this.leftPressed = false;
+        }
+        if(code == KeyEvent.VK_J) {
+            this.jPressed = true;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            this.enterPressed = true;
+        }
+        if(code == KeyEvent.VK_ESCAPE){
+            this.escPressed = true;
         }
     }
 
@@ -30,16 +43,25 @@ public class KeyHandle implements KeyListener{
         int code = e.getKeyCode(); // Pega o endereço da tecla pressionada
 
         if(code == KeyEvent.VK_UP || code == KeyEvent.VK_W) {
-            upPressed = false;
+            this.upPressed = false;
         }
         if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S) {
-            downPressed = false;
+            this.downPressed = false;
         }
         if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_A) {
-            leftPressed = false;
+            this.leftPressed = false;
         }
         if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_D) {
-            rightPressed = false;
+            this.rightPressed= false;
+        }
+        if(code == KeyEvent.VK_J) {
+            this.jPressed = false;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            this.enterPressed = false;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            this.escPressed = false;
         }
     }
 
@@ -47,4 +69,34 @@ public class KeyHandle implements KeyListener{
     public void keyTyped(KeyEvent e) {
         
     }    
+
+    public boolean getUpPressed() {
+        return upPressed;
+    }
+
+    public boolean getDownPressed() {
+        return downPressed;
+    }
+
+    public boolean getLeftPressed() {
+        return leftPressed;
+    }
+
+    public boolean getRightPressed() {
+        return rightPressed;
+    }
+    
+    public boolean getJPressed() {
+        return jPressed;
+    }
+
+    public boolean getEnterPressed(){
+        return enterPressed;
+    }
+
+    public boolean getEscPressed(){
+        return escPressed;
+    }
+
+    
 }
